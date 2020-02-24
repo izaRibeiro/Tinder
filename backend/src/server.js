@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const server = express();
 
-mongoose.connect('mongodb+srv://iza:iza@cluster0-xcpnh.mongodb.net/tinder?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://iza:iza@cluster0-xcpnh.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

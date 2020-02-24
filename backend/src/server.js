@@ -1,7 +1,13 @@
 const express = require('express');
 const routes = require('./routes');
+const mongoose = require('mongoose');
 
 const server = express();
+
+mongoose.connect('mongodb+srv://iza:iza@cluster0-xcpnh.mongodb.net/tinder?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 server.use(express.json())
 server.use(routes);

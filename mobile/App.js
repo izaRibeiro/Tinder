@@ -1,19 +1,11 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
+
+import Login from './src/pages/login';
 
 export default function App() {
   return (
-      <Text style={styles.hello}>Hello World</Text>
+      <Login />
   );
 }
 
-const styles = StyleSheet.create({
-  hello: {
-      flex: 1,
-      textAlign: "center",
-      fontSize: 50,
-      position: "relative",
-      top: 300
-  }
-})

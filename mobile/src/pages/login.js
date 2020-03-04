@@ -1,12 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 
 export default function login(){
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            behavior="pading"
+            enable={ Platform.OS === 'ios'}
+            style={styles.container}>
             <Text>Logo</Text>
 
-            <TextInput 
+            <TextInput
+            autoCapitalize='none'
+            autoCorrect={false}
             placeholder="Digite seu usuário do github"
             style={styles.input}
             >
@@ -16,7 +21,7 @@ export default function login(){
             style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

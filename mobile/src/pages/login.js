@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 
-export default function login(){
+import api from '../service/api';
+
+export default function login({ navigation }){
+    debugger
+    const [ user, setUser ] = useState('');
+    
+    async function handleLogin(){
+        const response = await api.post('/devs', { username: user });
+
+        const { _id } = response.data;
+
+        console.log(_id);
+
+        navigation.navigate('Main', { _id });
+    }
+    
     return (
         <KeyboardAvoidingView 
             behavior="pading"
@@ -14,10 +29,12 @@ export default function login(){
             autoCorrect={false}
             placeholder="Digite seu usuário do github"
             style={styles.input}
+            onChangeText={ setUser }
             >
             </TextInput>
 
             <TouchableOpacity
+            onPress={handleLogin}
             style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 //import AssyncStorage from '@react-native-community/async-storage';
 
+import logo from '../assets/logo.png';
 import api from '../service/api';
 
 export default function login({ navigation }){
@@ -32,7 +33,7 @@ export default function login({ navigation }){
             behavior="pading"
             enable={ Platform.OS === 'ios'}
             style={styles.container}>
-            <Text>Logo</Text>
+            <Image style={styles.logo} source={logo}></Image>
 
             <TextInput
             autoCapitalize='none'
@@ -86,5 +87,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18
 
-    }
+    },
+    logo: {
+        marginTop: 50,
+        maxHeight: 80,
+        maxWidth: 80,
+    },
 });

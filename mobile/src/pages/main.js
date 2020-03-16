@@ -1,10 +1,14 @@
 import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
+import logo from '../assets/logo.png';
+import gg from '../assets/GG.png';
+import fail from '../assets/FAIL.png';
+
 export default function Main(){
     return (
         <SafeAreaView style={styles.container}> 
-            <Text style={styles.logo}>Logoooooooooooo</Text>
+            <Image style={styles.logo} source={logo}></Image>
             <View style={styles.cardsContainer}>
                 <View style={[styles.card, { zIndex: 3}]}>
                     <Image style={styles.avatar} source={{ uri: "https://avatars3.githubusercontent.com/u/42190732?v=4" }} />
@@ -32,10 +36,10 @@ export default function Main(){
             </View>
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.button}>
-                    <Text>Like</Text>
+                    <Image source={fail} style={styles.buttonImageFail} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
-                    <Text>Dislike</Text>
+                    <Image source={gg} style={styles.buttonImageGg} /> 
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
         maxHeight: 500,
-        marginTop: 80
+        marginTop: 20,
     },
     card: {
         borderWidth: 1,
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: 0,
     },
     avatar: {
         flex: 1,
@@ -73,21 +77,23 @@ const styles = StyleSheet.create({
     footer: {
         backgroundColor: '#fff',
         paddingHorizontal: 20,
-        paddingVertical: 15
+        paddingVertical: 15,
     },
     name: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#333'
+        color: '#333',
     },
     bio: {
         fontSize: 14,
         color: '#999',
         marginTop: 2,
-        lineHeight: 15
+        lineHeight: 15,
     },
     logo: {
-        marginTop: 50
+        marginTop: 50,
+        maxHeight: 80,
+        maxWidth: 80,
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -101,6 +107,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 15,
-        elevation: 2
+        elevation: 2,
+    },
+    buttonImageGg: {
+        maxHeight: 40,
+        maxWidth: 40,
+    },
+    buttonImageFail: {
+        maxHeight: 55,
+        maxWidth: 55,
     }
 });

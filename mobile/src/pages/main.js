@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 import api from '../service/api';
 
@@ -43,19 +44,31 @@ export default function Main({ navigation }){
         setUsers(users.filter(user => user._id !== id))
     }
 
+
+    async function handleLogout(){
+        await AsyncStorage.clear();
+
+        navigation.navigate('Login')
+    }
+
     return (
         <SafeAreaView style={styles.container}> 
+        
             <Image style={styles.logo} source={logo}></Image>
-
+            <TouchableOpacity onPress={handleLogout}>
+                <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
             <View style={styles.cardsContainer}>
-            { users.map((user, index) => 
-                <View key={ user._id } style={[styles.card, { zIndex: users.length - index }]}>
-                    <Image style={styles.avatar} source={{ uri: user.avatar }} />
-                    <View style={styles.footer}>
-                        <Text style={styles.name}> { user.name } </Text>
-                        <Text style={styles.bio} numberOfLines={3}> { user.bio } </Text>
-                    </View>
-                </View>)}
+            { users.length === 0 ? <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+            : users.map((user, index) => 
+            <View key={ user._id } style={[styles.card, { zIndex: users.length - index }]}>
+                <Image style={styles.avatar} source={{ uri: user.avatar }} />
+                <View style={styles.footer}>
+                    <Text style={styles.name}> { user.name } </Text>
+                    <Text style={styles.bio} numberOfLines={3}> { user.bio } </Text>
+                </View>
+            </View>)
+            }
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -119,6 +132,15 @@ const styles = StyleSheet.create({
         marginTop: 50,
         maxHeight: 80,
         maxWidth: 80,
+    },
+    logout: {
+        
+    },
+    empty: {
+        alignSelf: 'center',
+        color: '#999',
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     buttonsContainer: {
         flexDirection: 'row',

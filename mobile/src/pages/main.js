@@ -7,6 +7,7 @@ import api from '../service/api';
 import logo from '../assets/logo.png';
 import gg from '../assets/GG.png';
 import fail from '../assets/FAIL.png';
+import cat from '../assets/catCrying.jpg';
 
 export default function Main({ navigation }){
     const id = navigation.getParam('user');
@@ -20,28 +21,33 @@ export default function Main({ navigation }){
                     user: id
                 }
             })
-            setUsers(response.data)
+            setUsers(response.data);
         }
         loadUsers()
     }, [id])
 
-    async function handleLike(id) {
-        await api.post(`/devs/${id}/likes`, null, {
+    async function handleLike() {
+        //[ ] pega a primeira posição do array e o rest representa o restante
+        const [ user, ...rest ] = users;
+
+        await api.post(`/devs/${user._id}/likes`, null, {
             headers: {
                 user: id
             }
         })
 
-        setUsers(users.filter(user => user._id !== id))
+        setUsers(rest);
     }
 
-    async function handleDislike(id) {
-        await api.post(`/devs/${id}/dislikes`, null, {
+    async function handleDislike() {
+        const [ user, ...rest ] = users;
+
+        await api.post(`/devs/${user._id}/dislikes`, null, {
             headers: {
                 user: id
             }
         })
-        setUsers(users.filter(user => user._id !== id))
+        setUsers(rest);
     }
 
 
@@ -59,7 +65,11 @@ export default function Main({ navigation }){
                 <Text style={styles.logout}>Logout</Text>
             </TouchableOpacity>
             <View style={styles.cardsContainer}>
-            { users.length === 0 ? <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+            { users.length === 0 ? 
+                <>
+                <Image style={styles.cat} source={cat} />
+                <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+                </>
             : users.map((user, index) => 
             <View key={ user._id } style={[styles.card, { zIndex: users.length - index }]}>
                 <Image style={styles.avatar} source={{ uri: user.avatar }} />
@@ -71,14 +81,19 @@ export default function Main({ navigation }){
             }
             </View>
 
-            <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button}>
+            { 
+              users.length > 0 &&
+                <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={styles.button} onPress={handleDislike}>
                     <Image source={fail} style={styles.buttonImageFail} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={handleLike}>
                     <Image source={gg} style={styles.buttonImageGg} /> 
                 </TouchableOpacity>
-            </View>
+             </View>
+            }
+
+
 
         </SafeAreaView>
     )
@@ -138,9 +153,12 @@ const styles = StyleSheet.create({
     },
     empty: {
         alignSelf: 'center',
+        padding: 10,
         color: '#999',
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 5,
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -163,5 +181,11 @@ const styles = StyleSheet.create({
     buttonImageFail: {
         maxHeight: 55,
         maxWidth: 55,
+    },
+    cat: {
+        alignSelf: 'center',
+        margin: 15,
+        height: 200,
+        width: 200
     }
 });

@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { YellowBox } from 'react-native';
 
-import Login from './src/pages/login';
 import Routes from './src/pages/routes';
+
+YellowBox.ignoreWarnings([
+  'Unrecognized WebSocket'
+]);
 
 export default function App() {
   return (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import io from 'socket.io-client';
 
 import api from '../service/api';
 
@@ -12,7 +13,7 @@ import cat from '../assets/catCrying.jpg';
 export default function Main({ navigation }){
     const id = navigation.getParam('user');
     const [users, setUsers] = useState([])
-    const [matchDev, setMatchDev] = useState(false)
+    const [matchDev, setMatchDev] = useState(true);
 
     useEffect(() => {
         async function loadUsers() {
@@ -24,6 +25,18 @@ export default function Main({ navigation }){
             setUsers(response.data);
         }
         loadUsers()
+    }, [id])
+
+    useEffect(() => {
+        const socket = io('http://192.168.0.5:3333', { 
+            query: {
+                user: id
+            }
+        })
+
+        socket.on('match', dev => {
+            setMatchDev(dev)
+        })
     }, [id])
 
     async function handleLike() {
@@ -71,7 +84,7 @@ export default function Main({ navigation }){
                 <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
                 </>
             : users.map((user, index) => 
-            <View key={ user._id } style={[styles.card, { zIndex: users.length - index }]}>
+            <View key={ user._id } style={[styles.card, { zIndex: users.length - index   }]}>
                 <Image style={styles.avatar} source={{ uri: user.avatar }} />
                 <View style={styles.footer}>
                     <Text style={styles.name}> { user.name } </Text>
@@ -83,7 +96,7 @@ export default function Main({ navigation }){
 
             { 
               users.length > 0 &&
-                <View style={styles.buttonsContainer}>
+            <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.button} onPress={handleDislike}>
                     <Image source={fail} style={styles.buttonImageFail} />
                 </TouchableOpacity>
@@ -93,7 +106,21 @@ export default function Main({ navigation }){
              </View>
             }
 
+            { matchDev && (
+                <View style={[styles.matchCoontainer,  { zIndex: users.length + 1   }]}>
+                <Image style={styles.matchImage} source={gg}  /> 
+       
+                <Image style={styles.matchAvatar} source={{ uri: 'https://avatars0.githubusercontent.com/u/42622467?v=4'}}>
+                </Image>
+                
+                    <Text style={styles.matchName}>Nome</Text>
+                    <Text style={styles.matchBio}>Matchsadghasds</Text>
 
+                    <TouchableOpacity onPress={() => setMatchDev(null)}>
+                        <Text style={styles.closeMatch}>Fechar</Text>
+                    </TouchableOpacity>
+                    </View>
+            )}
 
         </SafeAreaView>
     )
@@ -126,6 +153,7 @@ const styles = StyleSheet.create({
     avatar: {
         flex: 1,
         height: 300,
+
     },
     footer: {
         backgroundColor: '#fff',
@@ -187,5 +215,48 @@ const styles = StyleSheet.create({
         margin: 15,
         height: 200,
         width: 200
+    },
+    matchCoontainer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    matchImage: {
+        height: 80,
+        resizeMode: 'contain'
+    },
+    matchAvatar: {
+        width: 160,
+        height: 160,
+        borderRadius: 80,
+        borderWidth: 5,
+        borderColor: '#FFF',
+        marginVertical: 30,
+    },
+    matchName: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: '#FFF',
+    },
+    matchBio: {
+        marginTop: 10,
+        fontSize: 16,
+        color: 'rgba(255, 255, 255, 0.8)',
+        lineHeight: 24,
+        textAlign: 'center',
+        paddingHorizontal: 30
+    },
+    closeMatch: {
+        fontSize: 16,
+        color: 'rgba(255, 255, 255, 0.8)',
+        textAlign: 'center',
+        marginTop: 30,
+        fontWeight: 'bold',
     }
+
 });

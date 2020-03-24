@@ -15,7 +15,7 @@ io.on('connection', socket => {
 
     console.log(user, socket.id);
 
-    //connectedUsers[ID_USUARIO] = socket.id;
+    connectedUsers[user] = socket.id;
 });
 
 mongoose.connect('mongodb+srv://iza:iza@cluster0-xcpnh.mongodb.net/test?retryWrites=true&w=majority', {

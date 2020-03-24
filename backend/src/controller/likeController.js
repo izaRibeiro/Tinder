@@ -24,10 +24,12 @@ module.exports = {
 
                 if(loggedSocket){
                     req.io.to(loggedSocket).emit('match', targetDev);
+                    console.log("Match logged");
                 }
 
                 if(targetSocket){
                     req.io.to(targetSocket).emit('match', loggedDev);
+                    console.log("Match target");
                 }
             }
     

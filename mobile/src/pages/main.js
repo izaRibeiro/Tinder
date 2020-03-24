@@ -13,7 +13,7 @@ import cat from '../assets/catCrying.jpg';
 export default function Main({ navigation }){
     const id = navigation.getParam('user');
     const [users, setUsers] = useState([])
-    const [matchDev, setMatchDev] = useState(true);
+    const [matchDev, setMatchDev] = useState(false);
 
     useEffect(() => {
         async function loadUsers() {
@@ -110,11 +110,11 @@ export default function Main({ navigation }){
                 <View style={[styles.matchCoontainer,  { zIndex: users.length + 1   }]}>
                 <Image style={styles.matchImage} source={gg}  /> 
        
-                <Image style={styles.matchAvatar} source={{ uri: 'https://avatars0.githubusercontent.com/u/42622467?v=4'}}>
+                <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }}>
                 </Image>
                 
-                    <Text style={styles.matchName}>Nome</Text>
-                    <Text style={styles.matchBio}>Matchsadghasds</Text>
+                    <Text style={styles.matchName}> { matchDev.name } </Text>
+                    <Text style={styles.matchBio}> { matchDev.bio } </Text>
 
                     <TouchableOpacity onPress={() => setMatchDev(null)}>
                         <Text style={styles.closeMatch}>Fechar</Text>

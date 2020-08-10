@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import io from 'socket.io-client';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import api from '../service/api';
 
@@ -9,6 +10,8 @@ import logo from '../assets/logo.png';
 import gg from '../assets/GG.png';
 import fail from '../assets/FAIL.png';
 import cat from '../assets/catCrying.jpg';
+
+Icon.loadFont();
 
 export default function Main({ navigation }){
     const id = navigation.getParam('user');
@@ -70,6 +73,10 @@ export default function Main({ navigation }){
         navigation.navigate('Login')
     }
 
+    async function handleSettings(){
+        navigation.navigate('Settings');
+    }
+
     return (
         <SafeAreaView style={styles.container}> 
         
@@ -78,6 +85,7 @@ export default function Main({ navigation }){
                 <Text style={styles.logout}>Logout</Text>
             </TouchableOpacity>
             <View style={styles.cardsContainer}>
+
             { users.length === 0 ? 
                 <>
                 <Image style={styles.cat} source={cat} />
@@ -93,22 +101,27 @@ export default function Main({ navigation }){
             </View>)
             }
             </View>
-
+            <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
+                <Icon name="settings" size={40} color="grey" />
+            </TouchableOpacity>
             { 
               users.length > 0 &&
-            <View style={styles.buttonsContainer}>
+                <>
                 <TouchableOpacity style={styles.button} onPress={handleDislike}>
                     <Image source={fail} style={styles.buttonImageFail} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={handleLike}>
                     <Image source={gg} style={styles.buttonImageGg} /> 
                 </TouchableOpacity>
-             </View>
+                </>
+         
             }
+            </View>
 
             { matchDev && (
                 <View style={[styles.matchCoontainer,  { zIndex: users.length + 1   }]}>
-                <Image style={styles.matchImage} source={gg}  /> 
+                <Text style={styles.matchName}> Deu bom! </Text>
        
                 <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }}>
                 </Image>
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
         maxHeight: 500,
-        marginTop: 20,
+        marginTop: 0,
     },
     card: {
         borderWidth: 1,
@@ -202,6 +215,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         elevation: 2,
     },
+    buttonSettings: {
+        width: 50,
+        height: 50,
+    },  
     buttonImageGg: {
         maxHeight: 40,
         maxWidth: 40,

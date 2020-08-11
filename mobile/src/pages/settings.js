@@ -1,10 +1,12 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 
 export default function Settings({ navigation }){
+    const id = navigation.getParam('user');
+    const [users, setUsers] = useState('')
 
     async function handleMain(){
-        navigation.navigate('Main');
+        navigation.navigate('Main', { user: id } );
     }
 
     return (

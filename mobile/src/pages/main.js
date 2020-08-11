@@ -74,7 +74,7 @@ export default function Main({ navigation }){
     }
 
     async function handleSettings(){
-        navigation.navigate('Settings');
+        navigation.navigate('Settings', {user: id});
     }
 
     return (

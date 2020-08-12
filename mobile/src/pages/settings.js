@@ -1,5 +1,6 @@
 import React ,{useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { Slider } from 'react-native';
 
 export default function Settings({ navigation }){
     const id = navigation.getParam('user');
@@ -13,7 +14,7 @@ export default function Settings({ navigation }){
     <SafeAreaView style={styles.container}>
         <Text style={styles.title}> Configurações </Text>
         
-        <Text style={styles.textForm}>Nome de usuário </Text>
+        <Text style={styles.textForm}>Nome de usuário</Text>
         <TextInput
             autoCapitalize='none'
             autoCorrect={false}
@@ -21,11 +22,24 @@ export default function Settings({ navigation }){
             style={styles.input}> 
         </TextInput>
 
+        <Text style={styles.textForm}>Distância</Text>
+
+        <Text style={styles.distanceText}>1km</Text>
+        <Text style={styles.distanceText}>30km</Text>
+        <Slider
+            style={{width: 250, height: 40}}
+            minimumValue={0}
+            maximumValue={10}
+            minimumTrackTintColor="#cc03d8"
+            maximumTrackTintColor="#000000"
+        />
+
         <TouchableOpacity
         onPress={handleMain}
         style={styles.button}>
             <Text>Voltar</Text>
         </TouchableOpacity>
+
     </SafeAreaView>
     
     );
@@ -54,6 +68,9 @@ const styles = StyleSheet.create({
         margin: 15,
         marginTop: 10,
     },
+    distanceText: {
+    
+    },
     textForm: {
         alignSelf: "flex-start",
         marginLeft: 30,
@@ -63,11 +80,10 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#b00d37',
         borderRadius: 10,
-        marginTop: 15,
         justifyContent: 'center',
         alignItems: 'center',
 
-        marginTop: 300,
+        marginTop: 200,
         marginHorizontal: 20,
         marginLeft: 250
     }

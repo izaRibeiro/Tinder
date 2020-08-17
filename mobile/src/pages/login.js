@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
+import { getDistance } from 'geolib';
 
 import logo from '../assets/logo.png';
 import api from '../service/api';
@@ -19,6 +20,11 @@ export default function login({ navigation }){
                 });
 
                 const { latitude, longitude } = coords;
+
+                // getDistance(
+                //     { latitude: 51.5103, longitude: 7.49347 },
+                //     { latitude: "51° 31' N", longitude: "7° 28' E" }
+                // );
 
                 setCurrentRegion({
                     latitude,

@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const PointSchema = require('./Point');
 
 const DevSchema = new Schema({
     name: {
@@ -21,7 +22,11 @@ const DevSchema = new Schema({
     dislikes: [{
         type: Schema.Types.ObjectId,
         ref: 'Dev', 
-    }]
+    }],
+    location: {
+        type: PointSchema,
+        index: '2dsphere'
+    }
 }, {
     timestamps: true,
 });

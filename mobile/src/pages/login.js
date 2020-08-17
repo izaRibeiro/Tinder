@@ -7,10 +7,9 @@ import api from '../service/api';
 
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
-    
 
     async function handleLogin(){
-        const response = await api.post('/devs', { username: user });
+        const response = await api.post('/devs', { username: user, latitude: 37.78825, longitude: -122.4324,});
 
         const { _id } = response.data;
 

@@ -77,6 +77,10 @@ export default function Main({ navigation }){
         navigation.navigate('Settings', {user: id});
     }
 
+    async function handleChat(){
+        navigation.navigate('Chat', {user: id});
+    }
+
     return (
         <SafeAreaView style={styles.container}> 
         
@@ -89,7 +93,7 @@ export default function Main({ navigation }){
             { users.length === 0 ? 
                 <>
                 <Image style={styles.cat} source={cat} />
-                <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+                <Text style={styles.empty}> Opsss ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
                 </>
             : users.map((user, index) => 
             <View key={ user._id } style={[styles.card, { zIndex: users.length - index   }]}>
@@ -117,6 +121,9 @@ export default function Main({ navigation }){
                 </>
          
             }
+            <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleChat}>
+                <Icon name="settings" size={40} color="red" />
+            </TouchableOpacity>
             </View>
 
             { matchDev && (

@@ -1,15 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
-//import AssyncStorage from '@react-native-community/async-storage';
+import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 
 import logo from '../assets/logo.png';
 import api from '../service/api';
 
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
+    const [currentRegion, setCurrentRegion] = useState(null);
+
+    useEffect(() => {
+        async function loadInicialPosition(){
+            const { granted } = await requestPermissionsAsync();
+
+            if(granted){
+                const { coords } = await getCurrentPositionAsync({
+                    enableHighAccuracy: true,
+                });
+
+                const { latitude, longitude } = coords;
+
+                setCurrentRegion({
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.04,
+                    longitudeDelta: 0.04,
+                })
+            }
+        }
+
+        loadInicialPosition();
+    }, []);
 
     async function handleLogin(){
-        const response = await api.post('/devs', { username: user, latitude: 37.78825, longitude: -122.4324,});
+        const response = await api.post('/devs', { username: user, latitude: currentRegion.latitude, 
+            longitude: currentRegion.longitude});
 
         const { _id } = response.data;
 
@@ -22,7 +47,6 @@ export default function login({ navigation }){
             enable={ Platform.OS === 'ios'}
             style={styles.container}>
             <Image style={styles.logo} source={logo}></Image>
-
             <TextInput
             autoCapitalize='none'
             autoCorrect={false}

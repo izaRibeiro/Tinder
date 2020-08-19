@@ -8,14 +8,19 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@react-native-community/async-storage": "^1.8.1",
+    "@react-native-community/slider": "^3.0.3",
     "axios": "^0.19.2",
     "expo": "~36.0.0",
+    "geolib": "^3.3.1",
     "react": "16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "0.61.5",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-reanimated": "^1.7.0",
+    "react-native-slider-text": "^0.0.4",
+    "react-native-vector-icons": "^7.0.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.2.2",
     "socket.io-client": "^2.3.0"

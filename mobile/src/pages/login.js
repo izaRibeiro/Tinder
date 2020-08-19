@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
-//import AssyncStorage from '@react-native-community/async-storage';
+import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
+import { getDistance } from 'geolib';
 
 import logo from '../assets/logo.png';
 import api from '../service/api';
 
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
-    
-   /* useEffect(() => {
-        AssyncStorage.getItem('user').then(user => {
-            if(user){
-                navigation.navigate('Main', { user });
+    const [currentRegion, setCurrentRegion] = useState(null);
+
+    useEffect(() => {
+        async function loadInicialPosition(){
+            const { granted } = await requestPermissionsAsync();
+
+            if(granted){
+                const { coords } = await getCurrentPositionAsync({
+                    enableHighAccuracy: true,
+                });
+
+                const { latitude, longitude } = coords;
+
+                // getDistance(
+                //     { latitude: 51.5103, longitude: 7.49347 },
+                //     { latitude: "51° 31' N", longitude: "7° 28' E" }
+                // );
+
+                setCurrentRegion({
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.04,
+                    longitudeDelta: 0.04,
+                })
             }
-        });
-    }, []);*/
+        }
+
+        loadInicialPosition();
+    }, []);
 
     async function handleLogin(){
-        const response = await api.post('/devs', { username: user });
+        const response = await api.post('/devs', { username: user, latitude: currentRegion.latitude, 
+            longitude: currentRegion.longitude});
 
         const { _id } = response.data;
-
-        //await AssyncStorage.setItem('user', _id);
-
-        console.log(_id);
 
         navigation.navigate('Main', { user : _id });
     }
@@ -34,7 +53,6 @@ export default function login({ navigation }){
             enable={ Platform.OS === 'ios'}
             style={styles.container}>
             <Image style={styles.logo} source={logo}></Image>
-
             <TextInput
             autoCapitalize='none'
             autoCorrect={false}

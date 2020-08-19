@@ -20,7 +20,7 @@ module.exports = {
     },
 
     async store(req, res){
-        const { username } = req.body;
+        const { username, latitude, longitude } = req.body;
         
         const userExists = await Dev.findOne({ user: username });
 
@@ -31,11 +31,17 @@ module.exports = {
 
         const {name, bio, avatar_url: avatar} = response.data;
 
+        const location = {
+            type: 'Point',
+            coordinates: [longitude, latitude]
+        }
+
         const dev = await Dev.create({
             name,
             user: username,
             bio,
-            avatar
+            avatar,
+            location
         });
         return res.json(dev);
     }

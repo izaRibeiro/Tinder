@@ -3,11 +3,10 @@ const Dev = require('../model/Dev');
 
 module.exports = { 
     async find(req, res){
-        // const { username } = req.query;
+        const { id } = req.query;
 
-        // console.log("Username", username)
-        // const loggedDev = await Dev.findById(username);
+        const loggedDev = await Dev.findById(id);
 
-        // return res.json(loggedDev.matchNumbers);
+        return res.json(loggedDev.matchNumbers);
     },
 };

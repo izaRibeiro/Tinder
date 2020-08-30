@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
-import { getDistance } from 'geolib';
+import Cadastro from './cadastro.js';
 
 import logo from '../assets/logo.png';
 import api from '../service/api';
@@ -9,6 +9,7 @@ import api from '../service/api';
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
     const [currentRegion, setCurrentRegion] = useState(null);
+    let [inCadastro, setInCadastro] = useState(false);
 
     useEffect(() => {
         async function loadInicialPosition(){
@@ -46,22 +47,30 @@ export default function login({ navigation }){
 
         navigation.navigate('Main', { user : _id });
     }
-    
+
     return (
         <KeyboardAvoidingView 
             behavior="pading"
             enable={ Platform.OS === 'ios'}
             style={styles.container}>
+            { inCadastro ? 
+                <Text style={styles.linkCadastro} onPress={() => setInCadastro(false)}>Login </Text> :
+                <Text style={styles.linkCadastro} onPress={() => setInCadastro(true)}>Cadastro </Text>
+            }
+     
             <Image style={styles.logo} source={logo}></Image>
             <TextInput
             autoCapitalize='none'
             autoCorrect={false}
-            placeholder="Digite seu usuário do github"
+            placeholder="Digite seu usuário do githurb"
             style={styles.input}
             onChangeText={ setUser }
+            maxLength={30}
             >
             </TextInput>
 
+            {inCadastro ? <Cadastro /> : null}
+            
             <TouchableOpacity
             onPress={handleLogin}
             style={styles.button}>
@@ -110,5 +119,5 @@ const styles = StyleSheet.create({
         marginTop: 50,
         maxHeight: 80,
         maxWidth: 80,
-    },
+    }
 });

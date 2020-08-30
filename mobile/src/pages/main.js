@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import io from 'socket.io-client';
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -11,9 +11,10 @@ import gg from '../assets/GG.png';
 import fail from '../assets/FAIL.png';
 import cat from '../assets/catCrying.jpg';
 
+
 Icon.loadFont();
 
-export default function Main({ navigation }){
+export default function Main({ navigation }) {
     const id = navigation.getParam('user');
     const [users, setUsers] = useState([])
     const [matchDev, setMatchDev] = useState(false);
@@ -31,7 +32,7 @@ export default function Main({ navigation }){
     }, [id])
 
     useEffect(() => {
-        const socket = io('http://192.168.0.5:3333', { 
+        const socket = io('http://192.168.0.5:3333', {
             query: {
                 user: id
             }
@@ -44,7 +45,7 @@ export default function Main({ navigation }){
 
     async function handleLike() {
         //[ ] pega a primeira posição do array e o rest representa o restante
-        const [ user, ...rest ] = users;
+        const [user, ...rest] = users;
 
         await api.post(`/devs/${user._id}/likes`, null, {
             headers: {
@@ -56,7 +57,7 @@ export default function Main({ navigation }){
     }
 
     async function handleDislike() {
-        const [ user, ...rest ] = users;
+        const [user, ...rest] = users;
 
         await api.post(`/devs/${user._id}/dislikes`, null, {
             headers: {
@@ -67,83 +68,111 @@ export default function Main({ navigation }){
     }
 
 
-    async function handleLogout(){
+    async function handleLogout() {
         await AsyncStorage.clear();
 
         navigation.navigate('Login')
     }
 
-    async function handleSettings(){
-        navigation.navigate('Settings', {user: id});
+    async function handleSettings() {
+        navigation.navigate('Settings', { user: id });
     }
 
     return (
-        <SafeAreaView style={styles.container}> 
-        
-            <Image style={styles.logo} source={logo}></Image>
-            <TouchableOpacity onPress={handleLogout}>
-                <Text style={styles.logout}>Logout</Text>
-            </TouchableOpacity>
-            <View style={styles.cardsContainer}>
 
-            { users.length === 0 ? 
-                <>
-                <Image style={styles.cat} source={cat} />
-                <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
-                </>
-            : users.map((user, index) => 
-            <View key={ user._id } style={[styles.card, { zIndex: users.length - index   }]}>
-                <Image style={styles.avatar} source={{ uri: user.avatar }} />
-                <View style={styles.footer}>
-                    <Text style={styles.name}> { user.name } </Text>
-                    <Text style={styles.bio} numberOfLines={3}> { user.bio } </Text>
-                </View>
-            </View>)
-            }
+        <SafeAreaView style={styles.container}>
+            <Image style={styles.logo} source={logo}></Image>
+
+            <View style={styles.logout}>
+                <TouchableOpacity onPress={handleLogout}>
+                    <Text style={styles.logout}>Logout</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttons1TopContainer}>
+                {
+
+                    <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
+                        <Icon name="settings" size={40} color="grey" />
+                    </TouchableOpacity>
+
+                }
+
+            </View>
+
+            <View style={styles.buttons2TopContainer}>
+                {
+
+                    <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
+                        <Icon name="refresh" size={40} color="orange" />
+                    </TouchableOpacity>
+
+                }
+
+            </View>
+
+            <View style={styles.cardsContainer}>
+                {users.length === 0 ?
+                    <>
+                        <Image style={styles.cat} source={cat} />
+                        <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+                    </>
+                    : users.map((user, index) =>
+                        <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
+                            <Image style={styles.avatar} source={{ uri: user.avatar }} />
+                            <View style={styles.footer}>
+                                <Text style={styles.name}> {user.name} </Text>
+                                <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
+                            </View>
+                        </View>)
+                }
             </View>
             <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
-                <Icon name="settings" size={40} color="grey" />
-            </TouchableOpacity>
-            { 
-              users.length > 0 &&
-                <>
-                <TouchableOpacity style={styles.button} onPress={handleDislike}>
-                    <Image source={fail} style={styles.buttonImageFail} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={handleLike}>
-                    <Image source={gg} style={styles.buttonImageGg} /> 
-                </TouchableOpacity>
-                </>
-         
-            }
+
+
+                {
+                    users.length > 0 &&
+                    <>
+                        <TouchableOpacity style={styles.button} onPress={handleDislike}>
+                            <Image source={fail} style={styles.buttonImageFail} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={handleLike}>
+                            <Image source={gg} style={styles.buttonImageGg} />
+                        </TouchableOpacity>
+                    </>
+
+                }
+
+
             </View>
 
-            { matchDev && (
-                <View style={[styles.matchCoontainer,  { zIndex: users.length + 1   }]}>
-                <Text style={styles.matchName}> Deu bom! </Text>
-       
-                <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }}>
-                </Image>
-                
-                    <Text style={styles.matchName}> { matchDev.name } </Text>
-                    <Text style={styles.matchBio}> { matchDev.bio } </Text>
+            {matchDev && (
+                <View style={[styles.matchCoontainer, { zIndex: users.length + 1 }]}>
+                    <Text style={styles.matchName}> Deu bom! </Text>
+
+                    <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }}>
+                    </Image>
+
+                    <Text style={styles.matchName}> {matchDev.name} </Text>
+                    <Text style={styles.matchBio}> {matchDev.bio} </Text>
 
                     <TouchableOpacity onPress={() => setMatchDev(null)}>
                         <Text style={styles.closeMatch}>Fechar</Text>
                     </TouchableOpacity>
-                    </View>
+                </View>
             )}
 
         </SafeAreaView>
+
     )
-} 
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     cardsContainer: {
         flex: 1,
@@ -186,11 +215,12 @@ const styles = StyleSheet.create({
     },
     logo: {
         marginTop: 50,
+        marginBottom: 4,
         maxHeight: 80,
         maxWidth: 80,
     },
     logout: {
-        
+
     },
     empty: {
         alignSelf: 'center',
@@ -201,31 +231,46 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
     },
+
+    buttons1TopContainer: {
+        position: 'absolute',
+        top: 55,
+        left: -15,
+    },
+
+    buttons2TopContainer: {
+        position: 'absolute',
+        top: 55,
+        left: 289,
+    },
+
     buttonsContainer: {
         flexDirection: 'row',
         marginBottom: 30,
     },
+
+
     button: {
-        width: 80,
-        height: 80,
+        width: 90,
+        height: 90,
         borderRadius: 50,
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 15,
-        elevation: 2,
+        marginHorizontal: 35,
+        elevation: 10,
     },
     buttonSettings: {
         width: 50,
         height: 50,
-    },  
+    },
     buttonImageGg: {
-        maxHeight: 40,
-        maxWidth: 40,
+        maxHeight: 80,
+        maxWidth: 80,
     },
     buttonImageFail: {
-        maxHeight: 55,
-        maxWidth: 55,
+        maxHeight: 80,
+        maxWidth: 80,
     },
     cat: {
         alignSelf: 'center',

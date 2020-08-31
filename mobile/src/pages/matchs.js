@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, Text, TouchableOpacity, ScrollView, View } from 'react-native';
 
 import { Voltar } from '../components/button-voltar'
 import api from '../service/api';
@@ -28,10 +28,13 @@ export default function match({ navigation }){
         navigation.navigate('Main', { user: id } );
     }
 
-    async function handleNumber(){
+    
+    function handleNumber(){
+        console.log("Entrou")
         return (numbers.map((number, index) => {
-            <View key={ index }>
-                <Text >Numero loooop: {number}</Text>
+            {console.log(number)}
+            <View key={index}>
+                <Text>Numero loooop: {number}</Text>
             </View>
         }))
     }
@@ -51,13 +54,17 @@ export default function match({ navigation }){
 
             <Text >Numero do html: {numbers.length}</Text>
             <Text > Numero do ZERO: {numbers[0]}</Text>
+
+      
             {numbers.forEach((number, index) => {
                 <Text>Mamãto {number}</Text>
             })}
+         
 
-            {numbers.length === 0 ? <Text >ZEROOOU</Text> :
-            handleNumber}
-
+            <ScrollView>
+                {numbers.length === 0 ? <Text >ZEROOOU</Text> :
+                handleNumber()}
+            </ScrollView>
             <TouchableOpacity
             onPress={handleMain}
             style={styles.button}>

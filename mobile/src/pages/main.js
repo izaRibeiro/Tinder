@@ -77,6 +77,10 @@ export default function Main({ navigation }){
         navigation.navigate('Settings', {user: id});
     }
 
+    async function handleMatchs(){
+        navigation.navigate('Matchs', {user: id});
+    }
+
     return (
         <SafeAreaView style={styles.container}> 
         
@@ -84,8 +88,12 @@ export default function Main({ navigation }){
             <TouchableOpacity onPress={handleLogout}>
                 <Text style={styles.logout}>Logout</Text>
             </TouchableOpacity>
-            <View style={styles.cardsContainer}>
 
+            <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleMatchs}>
+                <Icon name="favorite" size={40} color="red" />
+            </TouchableOpacity>
+            
+            <View style={styles.cardsContainer}>
             { users.length === 0 ? 
                 <>
                 <Image style={styles.cat} source={cat} />

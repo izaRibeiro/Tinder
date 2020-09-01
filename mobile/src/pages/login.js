@@ -10,7 +10,7 @@ export default function login({ navigation }){
     const [ user, setUser ] = useState('');
     const [currentRegion, setCurrentRegion] = useState(null);
     const [cadastro, setCadastro] = useState(null);
-    const [phone, setPhone] = useState(null);
+    const [phoneNumber, setPhone] = useState(null);
     const [inCadastro, setInCadastro] = useState(false);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function login({ navigation }){
 
     async function handleLogin(){
         const response = await api.post('/devs', { username: user, latitude: currentRegion.latitude, 
-            longitude: currentRegion.longitude, phoneNumber: phone});
+            longitude: currentRegion.longitude, phoneNumber: phoneNumber});
 
         const { _id } = response.data;
 
@@ -71,7 +71,16 @@ export default function login({ navigation }){
             >
             </TextInput>
 
-            {inCadastro ? <Cadastro /> : null}
+            {inCadastro ?     <TextInput
+                autoCapitalize='none'
+                autoCorrect={false}
+                placeholder="Número do celular"
+                style={styles.input}
+                onChangeText={ setPhone }
+                maxLength={9}
+                >
+                </TextInput>
+            : null}
             
             <TouchableOpacity
             onPress={handleLogin}

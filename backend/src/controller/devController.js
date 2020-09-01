@@ -33,10 +33,9 @@ module.exports = {
     },
 
     async store(req, res) {
-        const { username, latitude, longitude } = req.body;
+        const { username, latitude, longitude, phoneNumber } = req.body;
 
         const userExists = await Dev.findOne({ user: username });
-
         if (userExists) {
             return res.json(userExists);
         }

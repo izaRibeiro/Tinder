@@ -1,12 +1,20 @@
 import React ,{useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { Slider } from 'react-native';
+import api from '../service/api';
+
 
 export default function Settings({ navigation }){
     const id = navigation.getParam('user');
-    const [users, setUsers] = useState('')
+    const [users, setUsers] = useState()
+    const [bio, setBio] = useState()
+    const [phoneNumber, setPhoneNumber] = useState()
 
+    
+    console.log("nome:", users)
     async function handleMain(){
+        const response = await api.put(`devs/${id}`, { "name": users , "bio": bio , "phoneNumber": phoneNumber});
+
         navigation.navigate('Main', { user: id } );
     }
 
@@ -18,9 +26,25 @@ export default function Settings({ navigation }){
         <TextInput
             autoCapitalize='none'
             autoCorrect={false}
-            placeholder="Nome de usuário"
-            style={styles.input}> 
-        </TextInput>
+            
+            style={styles.input}
+            onChangeText={text => setUsers(text)}/> 
+
+        <Text style={styles.textForm}>Biografia</Text>
+        <TextInput
+            autoCapitalize='none'
+            autoCorrect={false}
+            value={bio}
+            style={styles.input}
+            onChangeText={text => setBio(text)}/>
+
+        <Text style={styles.textForm}>Telefone</Text>
+        <TextInput
+            autoCapitalize='none'
+            autoCorrect={false}
+            value={phoneNumber}
+            style={styles.input}
+            onChangeText={text => setPhoneNumber(text)}/>
 
         <Text style={styles.textForm}>Distância</Text>
 

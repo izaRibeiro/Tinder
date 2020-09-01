@@ -32,7 +32,7 @@ export default function Main({ navigation }) {
     }, [id])
 
     useEffect(() => {
-        const socket = io('http://192.168.0.5:3333', {
+        const socket = io('http://192.168.0.11:3333', {
             query: {
                 user: id
             }
@@ -119,7 +119,7 @@ export default function Main({ navigation }) {
                 {users.length === 0 ?
                     <>
                         <Image style={styles.cat} source={cat} />
-                        <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em preve teremos mais</Text>
+                        <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em breve teremos mais</Text>
                     </>
                     : users.map((user, index) =>
                         <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>

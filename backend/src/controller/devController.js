@@ -40,22 +40,26 @@ module.exports = {
         if (userExists) {
             return res.json(userExists);
         }
-        const response = await axios.get(`https://api.github.com/users/${username}`);
+        if(phoneNumber != null){
+            const response = await axios.get(`https://api.github.com/users/${username}`);
 
-        const { name, bio, avatar_url: avatar } = response.data;
-
-        const location = {
-            type: 'Point',
-            coordinates: [longitude, latitude]
+            const {name, bio, avatar_url: avatar} = response.data;
+    
+            const location = {
+                type: 'Point',
+                coordinates: [longitude, latitude]
+            }
+    
+            const dev = await Dev.create({
+                name,
+                user: username,
+                bio,
+                avatar,
+                location,
+                phoneNumber
+            });
+            return res.json(dev);
         }
-
-        const dev = await Dev.create({
-            name,
-            user: username,
-            bio,
-            avatar,
-            location
-        });
-        return res.json(dev);
+        return res.status(400).json({message: "Você ainda não possui cadastro no sistema" })
     }
 };

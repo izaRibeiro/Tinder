@@ -24,6 +24,11 @@ module.exports = {
 
                 if(loggedSocket){
                     req.io.to(loggedSocket).emit('match', targetDev);
+
+                    loggedDev.matchNumbers.push(targetDev.phoneNumber)
+                    targetDev.matchNumbers.push(loggedDev.phoneNumber)
+
+                    await targetDev.save();
                     console.log("Match logged");
                 }
 

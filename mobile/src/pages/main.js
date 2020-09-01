@@ -78,6 +78,10 @@ export default function Main({ navigation }) {
         navigation.navigate('Settings', { user: id });
     }
 
+    async function handleMatchs(){
+        navigation.navigate('Matchs', {user: id});
+    }
+
     return (
 
         <SafeAreaView style={styles.container}>
@@ -103,7 +107,7 @@ export default function Main({ navigation }) {
             <View style={styles.buttons2TopContainer}>
                 {
 
-                    <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
+                    <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleMatchs}>
                         <Icon name="message" size={40} color="grey" />
                     </TouchableOpacity>
 

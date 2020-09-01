@@ -2,6 +2,7 @@ const express = require('express');
 const devController = require('./controller/devController');
 const likeController = require('./controller/likeController');
 const dislikeController = require('./controller/dislikeController');
+const numberController = require('./controller/numberController');
 
 const routes = express.Router();
 
@@ -13,5 +14,6 @@ routes.post('/devs/:devId/dislikes', dislikeController.store);
 
 routes.put("/devs/:id", devController.update);
 routes.delete("/devs/:id", devController.destroy);
+routes.get('/number', numberController.find);
 
 module.exports = routes;

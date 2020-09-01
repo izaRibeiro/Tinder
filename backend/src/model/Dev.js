@@ -26,7 +26,15 @@ const DevSchema = new Schema({
     location: {
         type: PointSchema,
         index: '2dsphere'
-    }
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
+    matchNumbers: [{
+        type: String,
+        ref: 'Dev'
+    }]
 }, {
     timestamps: true,
 });

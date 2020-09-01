@@ -9,7 +9,9 @@ import api from '../service/api';
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
     const [currentRegion, setCurrentRegion] = useState(null);
-    let [inCadastro, setInCadastro] = useState(false);
+    const [cadastro, setCadastro] = useState(null);
+    const [phone, setPhone] = useState(null);
+    const [inCadastro, setInCadastro] = useState(false);
 
     useEffect(() => {
         async function loadInicialPosition(){
@@ -41,7 +43,7 @@ export default function login({ navigation }){
 
     async function handleLogin(){
         const response = await api.post('/devs', { username: user, latitude: currentRegion.latitude, 
-            longitude: currentRegion.longitude});
+            longitude: currentRegion.longitude, phoneNumber: phone});
 
         const { _id } = response.data;
 

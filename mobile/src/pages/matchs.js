@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, Text, TouchableOpacity, ScrollView, View } from 'react-native';
 
-import { Voltar } from '../components/button-voltar'
 import api from '../service/api';
 
 export default function match({ navigation }){
@@ -28,42 +27,16 @@ export default function match({ navigation }){
         navigation.navigate('Main', { user: id } );
     }
 
-    
-    function handleNumber(){
-        console.log("Entrou")
-        return (numbers.map((number, index) => {
-            {console.log(number)}
-            <View key={index}>
-                <Text>Numero loooop: {number}</Text>
-            </View>
-        }))
-    }
-
     return (
         <>
-            <TextInput
-            autoCapitalize='none'
-            autoCorrect={false}
-            placeholder="Número do celular"
-            style={styles.input}
-            maxLength={9}
-            >
-            </TextInput>
+            <Text style={styles.title}>Meus Contatinhos</Text>
 
-            <Text >{id}</Text>
-
-            <Text >Numero do html: {numbers.length}</Text>
-            <Text > Numero do ZERO: {numbers[0]}</Text>
-
-      
-            {numbers.forEach((number, index) => {
-                <Text>Mamãto {number}</Text>
-            })}
-         
 
             <ScrollView>
-                {numbers.length === 0 ? <Text >ZEROOOU</Text> :
-                handleNumber()}
+
+                {numbers.length === 0 ? <Text style={styles.contact}>Você ainda não tem contatinhos</Text> :
+                numbers.map(number => <Text style={styles.contact}>{number}</Text>)}
+         
             </ScrollView>
             <TouchableOpacity
             onPress={handleMain}
@@ -97,5 +70,20 @@ const styles = StyleSheet.create({
         marginTop: 200,
         marginHorizontal: 20,
         marginLeft: 250
+    },
+    title: {
+        marginTop: 50,
+        marginBottom: 20,
+        textAlign: 'center',
+        fontSize: 20
+    },
+    contact: {
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#DDD",
+        borderRadius: 5,
+        padding: 20,
+        marginHorizontal: 20,
+        marginTop: 10
     }
 });

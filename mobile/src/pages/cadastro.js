@@ -7,6 +7,7 @@ import api from '../service/api';
 export default function login({ navigation }){
     const [ user, setUser ] = useState('');
     const [currentRegion, setCurrentRegion] = useState(null);
+    const [phone, setPhone] = useState(null);
 
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function login({ navigation }){
 
     async function handleLogin(){
         const response = await api.post('/devs', { username: user, latitude: currentRegion.latitude, 
-            longitude: currentRegion.longitude});
+            longitude: currentRegion.longitude, phoneNumber: phone});
 
         const { _id } = response.data;
 
@@ -48,7 +49,7 @@ export default function login({ navigation }){
         autoCorrect={false}
         placeholder="Número do celular"
         style={styles.input}
-        onChangeText={ setUser }
+        onChangeText={ setPhone }
         maxLength={9}
         >
         </TextInput>

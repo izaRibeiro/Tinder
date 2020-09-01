@@ -1,35 +1,48 @@
 const axios = require('axios');
 const Dev = require('../model/Dev');
+const { update } = require('../model/Dev');
 
-module.exports = { 
+module.exports = {
 
-    async index(req, res){
+    async index(req, res) {
         const { user } = req.headers;
 
         const loggedDev = await Dev.findById(user);
 
         const users = await Dev.find({
             $and: [
-                { _id: { $ne: user} },
-                { _id: { $nin: loggedDev.likes }},
-                { _id: { $nin: loggedDev.dislikes}}
+                { _id: { $ne: user } },
+                { _id: { $nin: loggedDev.likes } },
+                { _id: { $nin: loggedDev.dislikes } }
             ],
         });
 
         return res.json(users);
     },
 
-    async store(req, res){
+    async update(req, res) {
+        const devs = await Dev.findByIdAndUpdate(req.params.id, req.body, {
+            new: true
+        });
+        return res.json(devs);
+    },
+
+    async destroy (req,res){
+        await Dev.findByIdAndRemove(req.params.id);
+        return res.send();
+    },
+
+    async store(req, res) {
         const { username, latitude, longitude } = req.body;
-        
+
         const userExists = await Dev.findOne({ user: username });
 
-        if(userExists){
+        if (userExists) {
             return res.json(userExists);
         }
         const response = await axios.get(`https://api.github.com/users/${username}`);
 
-        const {name, bio, avatar_url: avatar} = response.data;
+        const { name, bio, avatar_url: avatar } = response.data;
 
         const location = {
             type: 'Point',

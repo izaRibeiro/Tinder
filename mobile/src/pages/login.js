@@ -111,4 +111,5 @@ const styles = StyleSheet.create({
         maxHeight: 80,
         maxWidth: 80,
     },
+    
 });

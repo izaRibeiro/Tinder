@@ -11,4 +11,7 @@ routes.post('/devs', devController.store);
 routes.post('/devs/:devId/likes', likeController.store);
 routes.post('/devs/:devId/dislikes', dislikeController.store);
 
+routes.put("/devs/:id", devController.update);
+routes.delete("/devs/:id", devController.destroy);
+
 module.exports = routes;

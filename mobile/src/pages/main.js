@@ -104,7 +104,7 @@ export default function Main({ navigation }) {
                 {
 
                     <TouchableOpacity style={[styles.button, styles.buttonSettings]} onPress={handleSettings}>
-                        <Icon name="refresh" size={40} color="orange" />
+                        <Icon name="message" size={40} color="grey" />
                     </TouchableOpacity>
 
                 }

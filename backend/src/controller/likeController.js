@@ -28,7 +28,9 @@ module.exports = {
                     loggedDev.matchNumbers.push(targetDev.phoneNumber)
                     targetDev.matchNumbers.push(loggedDev.phoneNumber)
 
-                    await targetDev.save();
+                    loggedDev.matchs.push(targetDev._id)
+                    targetDev.matchs.push(loggedDev._id)
+
                     console.log("Match logged");
                 }
 
@@ -40,6 +42,7 @@ module.exports = {
     
             loggedDev.likes.push(targetDev._id);
     
+            await targetDev.save();
             await loggedDev.save();
     
             return res.json(loggedDev);

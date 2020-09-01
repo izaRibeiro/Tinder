@@ -22,6 +22,17 @@ export default function match({ navigation }){
         loadNumbers()
     }, [id])
 
+    useEffect(() => {
+        async function loadUsers() {
+            const response = await api.get('/devs', {
+                headers: {
+                    user: id
+                }
+            })
+            setUsers(response.data);
+        }
+        loadUsers()
+    }, [id])
 
     async function handleMain(){
         navigation.navigate('Main', { user: id } );
@@ -31,7 +42,7 @@ export default function match({ navigation }){
         <>
             <Text style={styles.title}>Meus Contatinhos</Text>
 
-
+            <Text > {users.map(user => user.name)}</Text>
             <ScrollView>
 
                 {numbers.length === 0 ? <Text style={styles.contact}>Você ainda não tem contatinhos</Text> :

@@ -11,7 +11,7 @@ import gg from '../assets/GG.png';
 import fail from '../assets/FAIL.png';
 import cat from '../assets/catCrying.jpg';
 
-
+console.disableYellowBox = true;
 Icon.loadFont();
 
 export default function Main({ navigation }) {

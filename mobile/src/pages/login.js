@@ -64,7 +64,7 @@ export default function login({ navigation }){
             <TextInput
             autoCapitalize='none'
             autoCorrect={false}
-            placeholder="Digite seu usuário do githurb"
+            placeholder="Digite seu usuário do github"
             style={styles.input}
             onChangeText={ setUser }
             maxLength={30}

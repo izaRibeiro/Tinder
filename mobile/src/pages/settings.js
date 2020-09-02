@@ -37,7 +37,6 @@ export default function Settings({ navigation }){
     return (
     <SafeAreaView style={styles.container}>
         <Text style={styles.title}> Configurações </Text>
-        
         <Text style={styles.textForm}>Nome de usuário</Text>
         <TextInput
             autoCapitalize='none'
@@ -66,18 +65,6 @@ export default function Settings({ navigation }){
             value={phoneNumber}
             style={styles.input}
             onChangeText={text => setPhoneNumber(text)}/>
-
-        <Text style={styles.textForm}>Distância</Text>
-
-        <Text style={styles.distanceText}>1km</Text>
-        <Text style={styles.distanceText}>30km</Text>
-        <Slider
-            style={{width: 250, height: 40}}
-            minimumValue={0}
-            maximumValue={10}
-            minimumTrackTintColor="#cc03d8"
-            maximumTrackTintColor="#000000"
-        />
 
         <TouchableOpacity
         onPress={handleMain}

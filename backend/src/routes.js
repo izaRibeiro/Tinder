@@ -8,6 +8,7 @@ const routes = express.Router();
 
 routes.get('/devs', devController.index);
 routes.post('/devs', devController.store);
+routes.get('/user', devController.find);
 
 routes.post('/devs/:devId/likes', likeController.store);
 routes.post('/devs/:devId/dislikes', dislikeController.store);

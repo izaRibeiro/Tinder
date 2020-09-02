@@ -1,6 +1,6 @@
 const axios = require('axios');
 const Dev = require('../model/Dev');
-const { update } = require('../model/Dev');
+const { update, findOneAndRemove } = require('../model/Dev');
 
 module.exports = {
 
@@ -18,6 +18,14 @@ module.exports = {
         });
 
         return res.json(users);
+    },
+
+    async find(req, res){
+        const { user } = req.headers;
+
+        const loggedDev = await Dev.findById(user);
+
+        return res.json(loggedDev);
     },
 
     async update(req, res) {

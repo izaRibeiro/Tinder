@@ -22,7 +22,6 @@ export default function match({ navigation }){
         loadNumbers()
     }, [id])
 
-
     async function handleMain(){
         navigation.navigate('Main', { user: id } );
     }

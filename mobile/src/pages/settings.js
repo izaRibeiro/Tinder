@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import React ,{useState, useEffect} from 'react';
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { Slider } from 'react-native';
 import api from '../service/api';
@@ -6,16 +6,25 @@ import api from '../service/api';
 
 export default function Settings({ navigation }){
     const id = navigation.getParam('user');
-    const [users, setUsers] = useState()
-    const [bio, setBio] = useState()
-    const [phoneNumber, setPhoneNumber] = useState()
+    const [loggedUser, serLoggedUser] = useState([]);
+    const [users, setUsers] = useState(loggedUser.name)
+    const [bio, setBio] = useState(loggedUser.bio)
+    const [phoneNumber, setPhoneNumber] = useState(loggedUser.phoneNumber)
 
-    
-    console.log("nome:", users)
     async function handleMain(){
+        findUser();
         const response = await api.put(`devs/${id}`, { "name": users , "bio": bio , "phoneNumber": phoneNumber});
 
         navigation.navigate('Main', { user: id } );
+    }
+
+    async function findUser(){
+        const response = await api.get('/user', {
+            headers: {
+                user: id
+            }
+        })
+        serLoggedUser(response.data);
     }
 
     return (
@@ -107,7 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
 
-        marginTop: 200,
+        marginTop: 10,
         marginHorizontal: 20,
         marginLeft: 250
     }

@@ -11,21 +11,28 @@ export default function Settings({ navigation }){
     const [bio, setBio] = useState(loggedUser.bio)
     const [phoneNumber, setPhoneNumber] = useState(loggedUser.phoneNumber)
 
+    // constructor(props) {
+    // }
+
     async function handleMain(){
-        findUser();
         const response = await api.put(`devs/${id}`, { "name": users , "bio": bio , "phoneNumber": phoneNumber});
 
         navigation.navigate('Main', { user: id } );
     }
 
-    async function findUser(){
-        const response = await api.get('/user', {
-            headers: {
-                user: id
-            }
-        })
-        serLoggedUser(response.data);
-    }
+    useEffect(() => {
+        async function findUser(){
+            const response = await api.get('/user', {
+                headers: {
+                    user: id
+                }
+            })
+            serLoggedUser(response.data);
+        }
+    
+
+        findUser()
+    }, [id])
 
     return (
     <SafeAreaView style={styles.container}>
@@ -35,7 +42,8 @@ export default function Settings({ navigation }){
         <TextInput
             autoCapitalize='none'
             autoCorrect={false}
-            
+            placeholder={loggedUser.name}
+            placeholderTextColor="#000" 
             style={styles.input}
             onChangeText={text => setUsers(text)}/> 
 
@@ -43,6 +51,8 @@ export default function Settings({ navigation }){
         <TextInput
             autoCapitalize='none'
             autoCorrect={false}
+            placeholder={loggedUser.bio}
+            placeholderTextColor="#000" 
             value={bio}
             style={styles.input}
             onChangeText={text => setBio(text)}/>
@@ -51,6 +61,8 @@ export default function Settings({ navigation }){
         <TextInput
             autoCapitalize='none'
             autoCorrect={false}
+            placeholder={loggedUser.phoneNumber}
+            placeholderTextColor="#000" 
             value={phoneNumber}
             style={styles.input}
             onChangeText={text => setPhoneNumber(text)}/>
@@ -119,5 +131,5 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 20,
         marginLeft: 250
-    }
+    },
 })

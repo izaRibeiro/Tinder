@@ -34,7 +34,7 @@ export default function match({ navigation }){
             <ScrollView>
 
                 {numbers.length === 0 ? <Text style={styles.contact}>Você ainda não tem contatinhos</Text> :
-                numbers.map(number => <Text style={styles.contact}>{number}</Text>)}
+                numbers.map((number,idx) => <Text style={styles.contact} key={idx}>{number}</Text>)}
          
             </ScrollView>
             <TouchableOpacity

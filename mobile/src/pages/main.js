@@ -16,8 +16,10 @@ Icon.loadFont();
 
 export default function Main({ navigation }) {
     const id = navigation.getParam('user');
-    const [users, setUsers] = useState([])
+    const [loggedUser, serLoggedUser] = useState([]);
+    const [users, setUsers] = useState([]);
     const [matchDev, setMatchDev] = useState(false);
+    const [distance, setDistance] = useState(false);
 
     useEffect(() => {
         async function loadUsers() {
@@ -27,8 +29,63 @@ export default function Main({ navigation }) {
                 }
             })
             setUsers(response.data);
+
+            loadDistance()
         }
         loadUsers()
+    }, [id])
+
+    function loadDistance() {
+
+        console.log("Dist tgd 1",  users[0].location.coordinates[1])
+        console.log("Dist tgd 2",  users[0].location.coordinates[1])
+        console.log("Dist log 1",  loggedUser.location.coordinates[0])
+        console.log("Dist log 2",  loggedUser.location.coordinates[1])
+        
+        position1 = { latitude: users[0].location.coordinates[1], longitude: users[0].location.coordinates[1] }    
+        position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
+        function getDistanceFromLatLonInMeter(position1, position2) {
+            console.log("Entrou")
+            try {
+              let deg2rad = function (deg) {
+                return deg * (Math.PI / 180);
+              },
+                R = 6371,
+                dLat = deg2rad(position2.latitude - position1.latitude),
+                dLng = deg2rad(position2.longitude - position1.longitude),
+                a =
+                  Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(deg2rad(position1.latitude)) *
+                  Math.cos(deg2rad(position1.latitude)) *
+                  Math.sin(dLng / 2) *
+                  Math.sin(dLng / 2),
+                c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                const distance = (R * c * 1000).toFixed();
+
+                console.log("Distance", distance)
+              return distance;
+            } catch (error) {
+              console.log("Erro")
+              return 0;
+            }
+        };
+
+        setDistance(getDistanceFromLatLonInMeter(position1, position2));
+        return distance;
+    }
+
+    useEffect(() => {
+        async function findUser(){
+            const response = await api.get('/user', {
+                headers: {
+                    user: id
+                }
+            })
+            serLoggedUser(response.data);
+        }
+
+        findUser()
     }, [id])
 
     useEffect(() => {
@@ -44,7 +101,6 @@ export default function Main({ navigation }) {
     }, [id])
 
     async function handleLike() {
-        //[ ] pega a primeira posição do array e o rest representa o restante
         const [user, ...rest] = users;
 
         await api.post(`/devs/${user._id}/likes`, null, {
@@ -127,6 +183,7 @@ export default function Main({ navigation }) {
                             <View style={styles.footer}>
                                 <Text style={styles.name}> {user.name} </Text>
                                 <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
+                                <Text style={styles.name}> {distance} </Text>
                             </View>
                         </View>)
                 }

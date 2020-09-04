@@ -24,10 +24,44 @@ export default function login({ navigation }){
 
                 const { latitude, longitude } = coords;
 
-                // getDistance(
+                //  const distance = getDistance(
                 //     { latitude: 51.5103, longitude: 7.49347 },
-                //     { latitude: "51° 31' N", longitude: "7° 28' E" }
-                // );
+                //      { latitude: 51.5103, longitude: 7.49347 }
+                //  );
+
+               // const distance = locationA.distanceTo(locationB);
+
+
+                position1 = { latitude: -21.747983, longitude: -43.357617 }    
+                position2 = {latitude: -21.739891, longitude: -43.355787 }
+                function getDistanceFromLatLonInMeter(position1, position2) {
+                    console.log("Entrou")
+                    try {
+                      let deg2rad = function (deg) {
+                        return deg * (Math.PI / 180);
+                      },
+                        R = 6371,
+                        dLat = deg2rad(position2.latitude - position1.latitude),
+                        dLng = deg2rad(position2.longitude - position1.longitude),
+                        a =
+                          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                          Math.cos(deg2rad(position1.latitude)) *
+                          Math.cos(deg2rad(position1.latitude)) *
+                          Math.sin(dLng / 2) *
+                          Math.sin(dLng / 2),
+                        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                        const distance = (R * c * 1000).toFixed();
+
+                        console.log("Distance", distance)
+                      return distance;
+                    } catch (error) {
+                      console.log("Erro")
+                      return 0;
+                    }
+                };
+
+                getDistanceFromLatLonInMeter(position1, position2);
 
                 setCurrentRegion({
                     latitude,

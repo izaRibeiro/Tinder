@@ -38,47 +38,49 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         function loadDistance() {
-            console.log(users)
+            console.log("LGGGGG", users.length)
             if(users.length != 0){
-                console.log("Dist tgd 1",  users[0].location.coordinates[1])
-                console.log("Dist tgd 2",  users[0].location.coordinates[1])
-                console.log("Dist log 1",  loggedUser.location.coordinates[0])
-                console.log("Dist log 2",  loggedUser.location.coordinates[1])
-                
-                position1 = { latitude: users[0].location.coordinates[1], longitude: users[0].location.coordinates[1] }    
-                position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
-                function getDistanceFromLatLonInMeter(position1, position2) {
-                    console.log("Entrou")
-                    try {
-                    let deg2rad = function (deg) {
-                        return deg * (Math.PI / 180);
-                    },
-                        R = 6371,
-                        dLat = deg2rad(position2.latitude - position1.latitude),
-                        dLng = deg2rad(position2.longitude - position1.longitude),
-                        a =
-                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                        Math.cos(deg2rad(position1.latitude)) *
-                        Math.cos(deg2rad(position1.latitude)) *
-                        Math.sin(dLng / 2) *
-                        Math.sin(dLng / 2),
-                        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                setDistances([])
+                users.forEach((user, index) => {
 
-                        const distance = parseInt(((R * c * 1000).toFixed()) / 1000);
-                        setDistance(distance);
-                        setDistances([...distances, distance])
-                        console.log("distances", distances)
-
-                        console.log("Distance", distance)
+                    console.log("Dist tgd 1",  users[index].location.coordinates[0])
+                    console.log("Dist tgd 2",  users[index].location.coordinates[1])
+                    console.log("Dist log 1",  loggedUser.location.coordinates[0])
+                    console.log("Dist log 2",  loggedUser.location.coordinates[1])
+                    
+                    position1 = { latitude: users[index].location.coordinates[0], longitude: users[index].location.coordinates[1] }    
+                    position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
+                    function getDistanceFromLatLonInMeter(position1, position2) {
+                        console.log("Entrou")
+                        try {
+                        let deg2rad = function (deg) {
+                            return deg * (Math.PI / 180);
+                        },
+                            R = 6371,
+                            dLat = deg2rad(position2.latitude - position1.latitude),
+                            dLng = deg2rad(position2.longitude - position1.longitude),
+                            a =
+                            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(deg2rad(position1.latitude)) *
+                            Math.cos(deg2rad(position1.latitude)) *
+                            Math.sin(dLng / 2) *
+                            Math.sin(dLng / 2),
+                            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+                            const distance = parseInt(((R * c * 1000).toFixed()) / 1000);
+                            setDistance(distance);
+                            setDistances([...distances, distance])
+                            console.log("distances", distances)
+                        return distance;
+                        } catch (error) {
+                        console.log("Erro")
+                        return 0;
+                        }
+                    };
+    
+                    setDistance(getDistanceFromLatLonInMeter(position1, position2));
                     return distance;
-                    } catch (error) {
-                    console.log("Erro")
-                    return 0;
-                    }
-                };
-
-                setDistance(getDistanceFromLatLonInMeter(position1, position2));
-                return distance;
+                })
             }
         }
         loadDistance()

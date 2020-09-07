@@ -20,6 +20,7 @@ export default function Main({ navigation }) {
     const [users, setUsers] = useState([]);
     const [matchDev, setMatchDev] = useState(false);
     const [distance, setDistance] = useState(false);
+    const [distances, setDistances] = useState([]);
 
     useEffect(() => {
         async function loadUsers() {
@@ -28,52 +29,61 @@ export default function Main({ navigation }) {
                     user: id
                 }
             })
-            setUsers(response.data);
 
-            loadDistance()
+            setUsers(response.data);
         }
+        
         loadUsers()
     }, [id])
 
-    function loadDistance() {
+    useEffect(() => {
+        function loadDistance() {
+            console.log(users)
+            if(users.length != 0){
+                console.log("Dist tgd 1",  users[0].location.coordinates[1])
+                console.log("Dist tgd 2",  users[0].location.coordinates[1])
+                console.log("Dist log 1",  loggedUser.location.coordinates[0])
+                console.log("Dist log 2",  loggedUser.location.coordinates[1])
+                
+                position1 = { latitude: users[0].location.coordinates[1], longitude: users[0].location.coordinates[1] }    
+                position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
+                function getDistanceFromLatLonInMeter(position1, position2) {
+                    console.log("Entrou")
+                    try {
+                    let deg2rad = function (deg) {
+                        return deg * (Math.PI / 180);
+                    },
+                        R = 6371,
+                        dLat = deg2rad(position2.latitude - position1.latitude),
+                        dLng = deg2rad(position2.longitude - position1.longitude),
+                        a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(deg2rad(position1.latitude)) *
+                        Math.cos(deg2rad(position1.latitude)) *
+                        Math.sin(dLng / 2) *
+                        Math.sin(dLng / 2),
+                        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        console.log("Dist tgd 1",  users[0].location.coordinates[1])
-        console.log("Dist tgd 2",  users[0].location.coordinates[1])
-        console.log("Dist log 1",  loggedUser.location.coordinates[0])
-        console.log("Dist log 2",  loggedUser.location.coordinates[1])
-        
-        position1 = { latitude: users[0].location.coordinates[1], longitude: users[0].location.coordinates[1] }    
-        position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
-        function getDistanceFromLatLonInMeter(position1, position2) {
-            console.log("Entrou")
-            try {
-              let deg2rad = function (deg) {
-                return deg * (Math.PI / 180);
-              },
-                R = 6371,
-                dLat = deg2rad(position2.latitude - position1.latitude),
-                dLng = deg2rad(position2.longitude - position1.longitude),
-                a =
-                  Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(deg2rad(position1.latitude)) *
-                  Math.cos(deg2rad(position1.latitude)) *
-                  Math.sin(dLng / 2) *
-                  Math.sin(dLng / 2),
-                c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        const distance = parseInt(((R * c * 1000).toFixed()) / 1000);
+                        setDistance(distance);
+                        setDistances([...distances, distance])
+                        console.log("distances", distances)
 
-                const distance = (R * c * 1000).toFixed();
+                        console.log("Distance", distance)
+                    return distance;
+                    } catch (error) {
+                    console.log("Erro")
+                    return 0;
+                    }
+                };
 
-                console.log("Distance", distance)
-              return distance;
-            } catch (error) {
-              console.log("Erro")
-              return 0;
+                setDistance(getDistanceFromLatLonInMeter(position1, position2));
+                return distance;
             }
-        };
+        }
+        loadDistance()
+    }, [id])
 
-        setDistance(getDistanceFromLatLonInMeter(position1, position2));
-        return distance;
-    }
 
     useEffect(() => {
         async function findUser(){
@@ -183,7 +193,7 @@ export default function Main({ navigation }) {
                             <View style={styles.footer}>
                                 <Text style={styles.name}> {user.name} </Text>
                                 <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
-                                <Text style={styles.name}> {distance} </Text>
+                                <Text style={styles.name}> {distance} km </Text>
                             </View>
                         </View>)
                 }

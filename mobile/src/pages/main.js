@@ -38,11 +38,10 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         function loadDistance() {
-            if(users.length != 0){
+            if(users.length != 0 && distances.length == 0){
                 
                 users.forEach((user, index) => {
 
-                    
                     position1 = { latitude: users[index].location.coordinates[0], longitude: users[index].location.coordinates[1] }    
                     position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
                     function getDistanceFromLatLonInMeter(position1, position2) {
@@ -64,12 +63,12 @@ export default function Main({ navigation }) {
                             const distance = parseInt(((R * c * 1000).toFixed()) / 1000);
                             setDistance(distance);
 
-                            console.log("lg",distances.length);
-                            if(distances.length == 0){
-                                setDistances([...distances, distance])
-                            }
+                            console.log("lg", distances.length);
+                            distances.push(distance)
+                            setDistances([...distances])
 
-                            console.log("distances", distances)
+                            console.log("distance", distance)
+                            console.log(distances)
                         return distance;
                         } catch (error) {
                             console.log("Erro")
@@ -189,14 +188,17 @@ export default function Main({ navigation }) {
                         <Text style={styles.empty}> Ops ... parece que não há mais desenvolvedores por hoje. Em breve teremos mais</Text>
                     </>
                     : users.map((user, index) =>
+                        distances[index] > 1200 ?
                         <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
                             <Image style={styles.avatar} source={{ uri: user.avatar }} />
                             <View style={styles.footer}>
-                                <Text style={styles.name}> {user.name} {distances} </Text>
+                                <Text style={styles.name}> {user.name} {distances} / {index} </Text>
                                 <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
                                 <Text style={styles.name}> {distances[index]} km</Text>
                             </View>
-                        </View>)
+                        </View>
+                        : null
+                        )
                 }
             </View>
             <View style={styles.buttonsContainer}>

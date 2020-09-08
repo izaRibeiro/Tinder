@@ -38,20 +38,14 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         function loadDistance() {
-            console.log("LGGGGG", users.length)
             if(users.length != 0){
-                setDistances([])
+                
                 users.forEach((user, index) => {
 
-                    console.log("Dist tgd 1",  users[index].location.coordinates[0])
-                    console.log("Dist tgd 2",  users[index].location.coordinates[1])
-                    console.log("Dist log 1",  loggedUser.location.coordinates[0])
-                    console.log("Dist log 2",  loggedUser.location.coordinates[1])
                     
                     position1 = { latitude: users[index].location.coordinates[0], longitude: users[index].location.coordinates[1] }    
                     position2 = {latitude: loggedUser.location.coordinates[0], longitude: loggedUser.location.coordinates[1] }
                     function getDistanceFromLatLonInMeter(position1, position2) {
-                        console.log("Entrou")
                         try {
                         let deg2rad = function (deg) {
                             return deg * (Math.PI / 180);
@@ -69,11 +63,16 @@ export default function Main({ navigation }) {
     
                             const distance = parseInt(((R * c * 1000).toFixed()) / 1000);
                             setDistance(distance);
-                            setDistances([...distances, distance])
+
+                            console.log("lg",distances.length);
+                            if(distances.length == 0){
+                                setDistances([...distances, distance])
+                            }
+
                             console.log("distances", distances)
                         return distance;
                         } catch (error) {
-                        console.log("Erro")
+                            console.log("Erro")
                         return 0;
                         }
                     };
@@ -84,7 +83,7 @@ export default function Main({ navigation }) {
             }
         }
         loadDistance()
-    }, [id])
+    }, [])
 
 
     useEffect(() => {
@@ -193,9 +192,9 @@ export default function Main({ navigation }) {
                         <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
                             <Image style={styles.avatar} source={{ uri: user.avatar }} />
                             <View style={styles.footer}>
-                                <Text style={styles.name}> {user.name} </Text>
+                                <Text style={styles.name}> {user.name} {distances} </Text>
                                 <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
-                                <Text style={styles.name}> {distance} km </Text>
+                                <Text style={styles.name}> {distances[index]} km</Text>
                             </View>
                         </View>)
                 }

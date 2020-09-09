@@ -192,7 +192,7 @@ export default function Main({ navigation }) {
                         <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
                             <Image style={styles.avatar} source={{ uri: user.avatar }} />
                             <View style={styles.footer}>
-                                <Text style={styles.name}> {user.name} {distances} / {index} </Text>
+                                <Text style={styles.name}> {user.name} </Text>
                                 <Text style={styles.bio} numberOfLines={3}> {user.bio} </Text>
                                 <Text style={styles.name}> {distances[index]} km</Text>
                             </View>
